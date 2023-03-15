@@ -1,90 +1,33 @@
-const fs = require("fs");
-const index = fs.readFileSync("index.html", "utf-8");
-const data = JSON.parse(fs.readFileSync("data.json", "utf-8"));
-const products = data.products;
-
 const express = require("express");
 const app = express();
 // const morgan = require("morgan");
+const productController = require("./Controller/product");
 
 //-------------bodyParser-----------Build-in Middleware--------------------------------------(c)
 app.use(express.json());
 // app.use(express.urlencoded());
 // app.use(express.static("public"));
 
-const createProduct = (req, res) => {
-  // res.json({ type: "POST" });
-  console.log(req.body);
-  products.push(req.body);
-  res.json(products);
-};
-
-const getAllProducts = (req, res) => {
-  res.json(products);
-};
-
-const getProduct = (req, res) => {
-  console.log(typeof req.params.id); //string form
-  const id = +req.params.id;
-  console.log(typeof id); //number
-  const product = products.find((p) => p.id === id);
-  res.json(product);
-  // res.json(products);
-};
-
-const replaceProduct = (req, res) => {
-  console.log(typeof req.params.id); //string form
-  const id = +req.params.id;
-  console.log(typeof id); //number
-  const productIndex = products.findIndex((p) => p.id === id);
-  products.splice(productIndex, 1, { ...req.body, id: id });
-  res.status(201).json();
-
-  // res.json(products);
-};
-
-const updateProduct = (req, res) => {
-  console.log(typeof req.params.id); //string form
-  const id = +req.params.id;
-  console.log(typeof id); //number
-  const productIndex = products.findIndex((p) => p.id === id);
-  const product = products[productIndex]; //old product
-  products.splice(productIndex, 1, { ...product, ...req.body });
-  res.status(201).json();
-  // res.json(products);
-};
-
-const deleteProduct = (req, res) => {
-  console.log(typeof req.params.id); //string form
-  const id = +req.params.id;
-  console.log(typeof id); //number
-  const productIndex = products.findIndex((p) => p.id === id);
-  const product = products[productIndex];
-  products.splice(productIndex, 1);
-  res.status(201).json(product);
-  // res.json(products);
-};
-
 //===============API -Endpoint  -Route==========
 // products
 //API ROOT, base URL, google.com/api/v2
 
 //Create POST /products                 C R U D
-app.post("/products", createProduct);
+app.post("/products", productController.createProduct);
 
 //READ GET /products
-app.get("/products", getAllProducts);
+app.get("/products", productController.getAllProducts);
 
-app.get("/products/:id", getProduct);
+app.get("/products/:id", productController.getProduct);
 
 //UPDATE PUT /products/:id
-app.put("/products/:id", replaceProduct);
+app.put("/products/:id", productController.replaceProduct);
 
 //UPDATE PATCH /products/:id
-app.patch("/products/:id", updateProduct);
+app.patch("/products/:id", productController.updateProduct);
 
 //DELETE /products/:id
-app.delete("/products/:id", deleteProduct);
+app.delete("/products/:id", productController.deleteProduct);
 
 app.get("/demo", (req, res) => {
   //   res.sendStatus(404);
