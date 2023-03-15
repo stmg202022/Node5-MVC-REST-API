@@ -1,0 +1,16 @@
+
+1> learn to create a localhost server using express
+2> create a localhost port 8080
+3> Create a diff mathod ( GET, POST,.....) for same url path
+4> Learn req and res method from express doc and inplement it
+5> Learn application/Route/built-in level middleware by using following 
+    i> req.query
+    ii> req.body
+    iii> req.params
+6>Test it on the postman
+7>Learn third party middleware
+
+
+
+
+
