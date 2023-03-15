@@ -13,21 +13,22 @@ app.use(express.json());
 //API ROOT, base URL, google.com/api/v2
 
 //Create POST /products                 C R U D
-app.post("/products", productController.createProduct);
+app
+  .post("/products", productController.createProduct)
 
-//READ GET /products
-app.get("/products", productController.getAllProducts);
+  //READ GET /products
+  .get("/products", productController.getAllProducts)
 
-app.get("/products/:id", productController.getProduct);
+  .get("/products/:id", productController.getProduct)
 
-//UPDATE PUT /products/:id
-app.put("/products/:id", productController.replaceProduct);
+  //UPDATE PUT /products/:id
+  .put("/products/:id", productController.replaceProduct)
 
-//UPDATE PATCH /products/:id
-app.patch("/products/:id", productController.updateProduct);
+  //UPDATE PATCH /products/:id
+  .patch("/products/:id", productController.updateProduct)
 
-//DELETE /products/:id
-app.delete("/products/:id", productController.deleteProduct);
+  //DELETE /products/:id
+  .delete("/products/:id", productController.deleteProduct);
 
 app.get("/demo", (req, res) => {
   //   res.sendStatus(404);
