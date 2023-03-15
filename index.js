@@ -12,92 +12,79 @@ app.use(express.json());
 // app.use(express.urlencoded());
 // app.use(express.static("public"));
 
+const createProduct = (req, res) => {
+  // res.json({ type: "POST" });
+  console.log(req.body);
+  products.push(req.body);
+  res.json(products);
+};
+
+const getAllProducts = (req, res) => {
+  res.json(products);
+};
+
+const getProduct = (req, res) => {
+  console.log(typeof req.params.id); //string form
+  const id = +req.params.id;
+  console.log(typeof id); //number
+  const product = products.find((p) => p.id === id);
+  res.json(product);
+  // res.json(products);
+};
+
+const replaceProduct = (req, res) => {
+  console.log(typeof req.params.id); //string form
+  const id = +req.params.id;
+  console.log(typeof id); //number
+  const productIndex = products.findIndex((p) => p.id === id);
+  products.splice(productIndex, 1, { ...req.body, id: id });
+  res.status(201).json();
+
+  // res.json(products);
+};
+
+const updateProduct = (req, res) => {
+  console.log(typeof req.params.id); //string form
+  const id = +req.params.id;
+  console.log(typeof id); //number
+  const productIndex = products.findIndex((p) => p.id === id);
+  const product = products[productIndex]; //old product
+  products.splice(productIndex, 1, { ...product, ...req.body });
+  res.status(201).json();
+  // res.json(products);
+};
+
+const deleteProduct = (req, res) => {
+  console.log(typeof req.params.id); //string form
+  const id = +req.params.id;
+  console.log(typeof id); //number
+  const productIndex = products.findIndex((p) => p.id === id);
+  const product = products[productIndex];
+  products.splice(productIndex, 1);
+  res.status(201).json(product);
+  // res.json(products);
+};
+
 //===============API -Endpoint  -Route==========
 // products
 //API ROOT, base URL, google.com/api/v2
 
 //Create POST /products                 C R U D
-app.post("/products", (req, res) => {
-  // res.json({ type: "POST" });
-
-  console.log(req.body);
-
-  products.push(req.body);
-
-  res.json(products);
-});
+app.post("/products", createProduct);
 
 //READ GET /products
-app.get("/products", (req, res) => {
-  res.json(products);
-});
+app.get("/products", getAllProducts);
 
-app.get("/products/:id", (req, res) => {
-  console.log(typeof req.params.id); //string form
-
-  const id = +req.params.id;
-
-  console.log(typeof id); //number
-
-  const product = products.find((p) => p.id === id);
-
-  res.json(product);
-
-  // res.json(products);
-});
+app.get("/products/:id", getProduct);
 
 //UPDATE PUT /products/:id
-app.put("/products/:id", (req, res) => {
-  console.log(typeof req.params.id); //string form
-
-  const id = +req.params.id;
-
-  console.log(typeof id); //number
-
-  const productIndex = products.findIndex((p) => p.id === id);
-
-  products.splice(productIndex, 1, { ...req.body, id: id });
-  res.status(201).json();
-
-  // res.json(products);
-});
+app.put("/products/:id", replaceProduct);
 
 //UPDATE PATCH /products/:id
-app.patch("/products/:id", (req, res) => {
-  console.log(typeof req.params.id); //string form
-
-  const id = +req.params.id;
-
-  console.log(typeof id); //number
-
-  const productIndex = products.findIndex((p) => p.id === id);
-
-  const product = products[productIndex]; //old product
-
-  products.splice(productIndex, 1, { ...product, ...req.body });
-  res.status(201).json();
-
-  // res.json(products);
-});
+app.patch("/products/:id", updateProduct);
 
 //DELETE /products/:id
-app.delete("/products/:id", (req, res) => {
-  console.log(typeof req.params.id); //string form
-
-  const id = +req.params.id;
-
-  console.log(typeof id); //number
-
-  const productIndex = products.findIndex((p) => p.id === id);
-
-  const product = products[productIndex];
-
-  products.splice(productIndex, 1);
-
-  res.status(201).json(product);
-
-  // res.json(products);
-});
+app.delete("/products/:id", deleteProduct);
 
 app.get("/demo", (req, res) => {
   //   res.sendStatus(404);
